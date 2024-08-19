@@ -1,6 +1,11 @@
 package io.acyloxy.cloverproxy;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.acyloxy.cloverproxy.handler.HandleResult;
+import io.acyloxy.cloverproxy.handler.RequestHandlers;
+import io.acyloxy.cloverproxy.handler.ResponseHandlers;
+import io.acyloxy.cloverproxy.util.HttpClientUtils;
+import io.acyloxy.cloverproxy.util.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -28,21 +33,24 @@ public class Proxy implements DisposableBean {
     }
 
     @PostMapping("/p.f")
-    public JsonNode handle(@RequestBody JsonNode request) throws Exception {
+    public ObjectNode handle(@RequestBody ObjectNode request) throws Exception {
         // request
-        String before = request.toString();
-        if (RequestHandlers.handle(request)) {
-            log.info("[RequestHandle] before: {}, after: {}", before, request);
-            return request;
+        String before = request.toPrettyString();
+        HandleResult result = RequestHandlers.handle(request);
+        request = result.getResult();
+        if (result.isHandled()) {
+            log.info("[RequestHandle]\n----------before----------\n{}\n----------after----------\n{}", before, request.toPrettyString());
         }
         HttpPost post = new HttpPost("https://140.143.214.183/p.f");
         post.setEntity(HttpEntities.create(request.toString(), ContentType.APPLICATION_JSON));
 
         // response
-        JsonNode response = JsonUtils.toNode(client.execute(post, resp -> EntityUtils.toString(resp.getEntity(), StandardCharsets.UTF_8)));
-        before = response.toString();
-        if (ResponseHandlers.handle(response)) {
-            log.info("[ResponseHandle] before: {}, after: {}", before, response);
+        ObjectNode response = (ObjectNode) JsonUtils.toNode(client.execute(post, resp -> EntityUtils.toString(resp.getEntity(), StandardCharsets.UTF_8)));
+        before = response.toPrettyString();
+        result = ResponseHandlers.handle(response);
+        response = result.getResult();
+        if (result.isHandled()) {
+            log.info("[RequestHandle]\n----------before----------\n{}\n----------after----------\n{}", before, response.toPrettyString());
         }
         return response;
     }

@@ -1,4 +1,4 @@
-package io.acyloxy.cloverproxy;
+package io.acyloxy.cloverproxy.util;
 
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
