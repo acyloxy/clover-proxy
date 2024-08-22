@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.acyloxy.cloverproxy.handler.AbstractResponseHandler;
 import io.acyloxy.cloverproxy.handler.Command;
-import io.acyloxy.cloverproxy.handler.HandlerException;
+import io.acyloxy.cloverproxy.handler.HandleException;
+import io.acyloxy.cloverproxy.handler.Preset;
 import io.acyloxy.cloverproxy.util.StreamUtils;
 
 import java.util.Objects;
@@ -27,10 +28,10 @@ public class ModifyEquipments extends AbstractResponseHandler {
                 equipment.setQuality(505);
                 equipment.setSdId(5);
             }
-            response.set("zhanli", IntNode.valueOf(114514));
+            response.set("zhanli", IntNode.valueOf(Preset.POWER));
             return Optional.of(response);
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw new HandleException(e);
         }
     }
 

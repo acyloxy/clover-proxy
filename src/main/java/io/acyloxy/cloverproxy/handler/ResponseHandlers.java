@@ -40,7 +40,7 @@ public class ResponseHandlers {
                     handled = true;
                     response = opt.get();
                 }
-            } catch (HandlerException e) {
+            } catch (HandleException e) {
                 log.error("[ResponseHandleError]", e);
             }
         }

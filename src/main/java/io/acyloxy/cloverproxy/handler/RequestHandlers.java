@@ -1,7 +1,7 @@
 package io.acyloxy.cloverproxy.handler;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.acyloxy.cloverproxy.handler.request.ModifyBoxCount;
+import io.acyloxy.cloverproxy.handler.request.ModifyBattleResult;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class RequestHandlers {
     }
 
     private static void init() {
-        register(new ModifyBoxCount());
+        register(new ModifyBattleResult());
     }
 
     public static void register(RequestHandler handler) {
@@ -36,7 +36,7 @@ public class RequestHandlers {
                     handled = true;
                     request = opt.get();
                 }
-            } catch (HandlerException e) {
+            } catch (HandleException e) {
                 log.error("[ResponseHandleError]", e);
             }
         }

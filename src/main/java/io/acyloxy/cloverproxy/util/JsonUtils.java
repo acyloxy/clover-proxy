@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class JsonUtils {
@@ -12,6 +13,10 @@ public class JsonUtils {
 
     public static JsonNode toNode(String json) throws JsonProcessingException {
         return MAPPER.readTree(json);
+    }
+
+    public static JsonNode toNode(byte[] bytes) throws IOException {
+        return MAPPER.readTree(bytes);
     }
 
     public static JsonNode toNode(Object o) {

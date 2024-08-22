@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.acyloxy.cloverproxy.handler.AbstractResponseHandler;
 import io.acyloxy.cloverproxy.handler.Command;
-import io.acyloxy.cloverproxy.handler.HandlerException;
+import io.acyloxy.cloverproxy.handler.HandleException;
+import io.acyloxy.cloverproxy.handler.Preset;
 
 import java.util.Optional;
 
@@ -17,13 +18,13 @@ public class ModifyBattleAttributes extends AbstractResponseHandler {
     @Override
     public Optional<ObjectNode> handle(ObjectNode response) {
         try {
-            response.set("engineDmg", IntNode.valueOf(44444)); // 战机
-            response.set("hp", IntNode.valueOf(88888)); // 装甲
-            response.set("weaponDmg", IntNode.valueOf(4444)); // 副武器
-            response.set("wingmanDmg", IntNode.valueOf(4444)); // 僚机
+            response.set("engineDmg", IntNode.valueOf(Preset.ATTACK));
+            response.set("hp", IntNode.valueOf(Preset.HP));
+            response.set("weaponDmg", IntNode.valueOf(Preset.ATTACK_WEAPON));
+            response.set("wingmanDmg", IntNode.valueOf(Preset.ATTACK_WINGMAN));
             return Optional.of(response);
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw new HandleException(e);
         }
     }
 }

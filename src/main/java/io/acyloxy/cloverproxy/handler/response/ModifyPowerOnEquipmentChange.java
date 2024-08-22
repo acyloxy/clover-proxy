@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import io.acyloxy.cloverproxy.handler.AbstractResponseHandler;
 import io.acyloxy.cloverproxy.handler.Command;
-import io.acyloxy.cloverproxy.handler.HandlerException;
+import io.acyloxy.cloverproxy.handler.HandleException;
+import io.acyloxy.cloverproxy.handler.Preset;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -22,11 +23,11 @@ public class ModifyPowerOnEquipmentChange extends AbstractResponseHandler {
         try {
             ObjectNode head = (ObjectNode) response.get("head");
             String properties = head.get("properties").asText();
-            properties = PATTERN.matcher(properties).replaceAll("ZL:114514");
+            properties = PATTERN.matcher(properties).replaceAll("ZL:%d".formatted(Preset.POWER));
             head.set("properties", TextNode.valueOf(properties));
             return Optional.of(response);
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw new HandleException(e);
         }
     }
 }
